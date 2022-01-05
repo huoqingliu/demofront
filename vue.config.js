@@ -10,10 +10,10 @@ const resolve = dir => {
 // 如果应用部署在子路径中，则需要指定子路径
 // 例如：https://www.mp-app.com/demofront/
 // 则需要改为'demofront'
-const BASE_URL = process.env.MODE_ENV === 'development' ? '/' : '/'
-// const BASE_URL = process.env.MODE_ENV ==='development'?'/':'demofront'
+// const BASE_URL = process.env.MODE_ENV === 'development' ? '/' : '/'
+const BASE_URL = process.env.NODE_ENV ==='development'?'/':'demofront'
 module.exports = {
-  pubicPath: BASE_URL,
+  publicPath: BASE_URL,
   lintOnSave: true,
   chainWebpack: config => {
     config.performance.set('hints', false)
@@ -23,9 +23,9 @@ module.exports = {
     .set('_c', resolve('src/components'))
   },
   // 设置为false时，打包不生成.map文件
-  productionTip = false,
+  productionSourceMap:false,
   transpileDependencies: [
-    'view-design',
+    'iview-design',
     'axios',
   ],
   // 设置开发环境的配置

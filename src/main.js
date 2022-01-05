@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import App from 'components/app.vue';
-import Routers from './router.js';
+import App from './App';
+import router from './router';
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
-import { config } from '@/config';
+import {
+    config
+} from '@/config';
 
 Vue.use(VueRouter);
 Vue.use(ViewUI);
@@ -14,10 +16,7 @@ Vue.config.productionTip = false
 //全局注册应用配置
 Vue.prototype.$config = config
 // The routing configuration
-const RouterConfig = {
-    routes: Routers
-};
-const router = new VueRouter(RouterConfig);
+
 
 new Vue({
     el: '#app',
