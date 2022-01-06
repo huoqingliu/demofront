@@ -9,7 +9,7 @@ export const login = (userName, password, verify) => {
     verify
   }
   return axios.request({
-    url: `${base}/Login` + Date.parse(new Date()) / 1000,
+    url: `${base}/login?timeStamp=` + Date.parse(new Date()) / 1000,
     method: 'post',
     data
   })
@@ -18,7 +18,16 @@ export const login = (userName, password, verify) => {
 //退出登录
 export const logout = (token) => {
   return axios.request({
-    url: `${base}/logout` + Date.parse(new Date()) / 1000,
+    url: `${base}/logout?timeStamp=` + Date.parse(new Date()) / 1000,
     method: 'post',
   })
 }
+
+//退出登录
+export const getUserInfo = () => {
+  return axios.request({
+    url: `${base}/getUserInfo?timeStamp=` + Date.parse(new Date()) / 1000,
+    method: 'post',
+  })
+}
+

@@ -1,4 +1,4 @@
 const getters = {
-  token: state => state.user.token, // 用户的token
+  token: state => state.token, // 用户的token
 }
 export default getters

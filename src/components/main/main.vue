@@ -21,11 +21,15 @@
         <Header :style="{padding: 0}" class="layout-header-bar">
           <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24">
           </Icon>
+          <Breadcrumb style='position:absolute;top: 0;left: 75px'>
+            <BreadcrumbItem v-for="item in list" :to='item.to'><Icon type="ios-home-outline"></Icon>{{item}}</BreadcrumbItem>
+          </Breadcrumb>
         </Header>
-        <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
-         <keep-alive>
-          <router-view/>
-         </keep-alive>
+        <Content>
+          
+          <keep-alive>
+            <router-view />
+          </keep-alive>
         </Content>
       </Layout>
     </Layout>
@@ -36,7 +40,8 @@
   export default {
     data() {
       return {
-        isCollapsed: false
+        isCollapsed: false,
+        list:[]
       }
     },
     computed: {
@@ -57,11 +62,14 @@
       collapsedSider() {
         this.$refs.side1.toggleCollapse();
       }
-    }
+    },
+    mounted() {
+      console.log(this.$route,this.$router);
+    },
   }
 </script>
 
-<style scoped>
+<style lang='less' scoped>
   .layout {
     border: 1px solid #d7dde4;
     background: #f5f7f9;
@@ -70,9 +78,15 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
+
+    /deep/.ivu-layout.ivu-layout-has-sider {
+      height: 100%;
+      width: 100%;
+    }
   }
 
   .layout-header-bar {
+    position: relative;
     background: #fff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
   }

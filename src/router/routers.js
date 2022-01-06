@@ -3,6 +3,7 @@ export default [
   {
     path:'/login',
     name: 'login',
+    component: () => import('@/components/login/login.vue'),
     // 路由元信息，存放页面中会用到的状态或信息
     meta: {
       title: 'login-登录',
@@ -33,6 +34,18 @@ export default [
           icon:'md-home'
         },
         component:()=>import('@/view/home/home.vue')
+      },
+      {
+        path:'/demo',
+        name: 'demo',
+        // 路由元信息，存放页面中会用到的状态或信息
+        meta: {
+          title: '测试1',
+          noCache:true,
+          hideInMenu: true,
+          icon:'md-home'
+        },
+        component:()=>import('@/view/demo/demo.vue')
       },
     ]
   },

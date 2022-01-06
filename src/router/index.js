@@ -7,7 +7,7 @@ import { setToken, getToken, setTitle } from '@/libs/utils'
 import Cookies from 'js-cookie'
 import config from '@/config'
 
-const { TokenKey,homeName } = config
+const {TOKEN_TIME,homeName } = config
 
 Vue.use(Router)
 const router = new Router({
@@ -17,16 +17,16 @@ const router = new Router({
   }), // 切换路由自动滑动到顶部
   routes: routers// 默认只有常量路由, 其它权限路由后面动态添加
 })
-// const LOAGIN_PAGE_NAME = 'login'
+const LOAGIN_PAGE_NAME = 'login'
 
-const LOAGIN_PAGE_NAME = 'home'
+// const LOAGIN_PAGE_NAME = 'demo'
 
 
 router.beforeEach(( to,from,next)=>{
   iView.LoadingBar.start()
   const token = getToken()
+  console.log('路由守卫',token,to.name);
   if (!token) {
-    var TOKEN_TIME = TokenKey + 'time'
     Cookies.remove(TOKEN_TIME)
   }
   if (!token && to.name !== LOAGIN_PAGE_NAME) {
@@ -44,8 +44,30 @@ router.beforeEach(( to,from,next)=>{
     })
   } else {
     //校验用户信息，如果获取不到用户信息，就跳转到登录页面
-    if (store.start.user.hasGetInfo) {
-      
+    if (store.state.user.hasGetInfo) {
+      store.dispatch('getUserInfo').then(user => {
+        if (user.userId ==null) {
+          setToken('')
+          next({name:'LOAGIN_PAGE_NAME'})
+        } else {
+          next()
+        }
+      }).catch (() => {
+        setToken('')
+        next({name:'LOAGIN_PAGE_NAME'})
+      })
+    } else {
+      store.dispatch('getUserInfo').then(user => {
+        if (user.userId ==null) {
+          setToken('')
+          next({name:'LOAGIN_PAGE_NAME'})
+        } else {
+          next({name:homeName})
+        }
+      }).catch (() => {
+        setToken('')
+        next({name:'LOAGIN_PAGE_NAME'})
+      })
     }
   }
 })

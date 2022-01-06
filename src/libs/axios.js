@@ -19,7 +19,7 @@ const addErrorLog = errorInfo => {
     url: responseURL,
   }
   if (!responseURL.includes('save_error_logger')) {
-    store.app.dispatch('addErrorLog', info)
+    store.dispatch('addErrorLog', info)
   }
 }
 // Spin.hide()和Spin.show()不建议开启，对界面显示不友好
@@ -47,7 +47,7 @@ class HttpRequest {
   }
   interceptors(instance, url) {
     //请求拦截器
-    instance.interceptores.request.use(config => {
+    instance.interceptors.request.use(config => {
       if (!Object.keys(this.queue).length) {
         // Spin.show()
       }
@@ -57,7 +57,7 @@ class HttpRequest {
       return Promise.reject(error)
     })
     //响应拦截器
-    instance.interceptores.response.use(config => {
+    instance.interceptors.response.use(res => {
       const token = getToken()
       if (token) {
         setToken(token)

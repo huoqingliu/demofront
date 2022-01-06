@@ -6,7 +6,6 @@ import config from '@/config'
 
 const {title,cookieExpires,useI18n,TokenKey} = config
 
-
 // 定义token和tokenTime
 export const TOKEN_KEY = TokenKey
 export const TOKEN_TIME = TOKEN_KEY + 'Time'
@@ -25,12 +24,14 @@ export function setToken(token) {
   let millisecond = (new Date().getTime())
   // 获取当前并加上token失效的时间,设置为token的过期时间
   let expiresTime = millisecond + 60 * 1000 * cookieExpires
+console.log(TOKEN_KEY,TOKEN_TIME);
+  console.log('setToken',token,expiresTime);
   Cookies.set(TOKEN_KEY,token)
-  if (token) {
+  // if (token) {
     Cookies.set(TOKEN_TIME,expiresTime)
-  } else {
-    Cookies.remove(TOKEN_TIME)
-  }
+  // } else {
+  //   Cookies.remove(TOKEN_TIME)
+  // }
 }
 
 //删除token和tokenTime

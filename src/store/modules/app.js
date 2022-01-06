@@ -15,6 +15,9 @@ const state = {
 }
 
 const mutations = {
+  addError(state,error) {
+    state.errorList.push(error)
+  }
 }
 
 const getters = {
@@ -22,10 +25,13 @@ const getters = {
 }
 
 const actions = {
+  addErrorLog({commit},info) {
+    commit('addError',info)
+  }
 }
 
 export default {
-  namespaced: true,
+  // namespaced: true,
   state,
   mutations,
   getters,

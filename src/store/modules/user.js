@@ -1,4 +1,8 @@
-import {login,logout} from '@/api/login'
+import {
+  login,
+  logout,
+  getUserInfo
+} from '@/api/login'
 import {
   getToken,
   setToken,
@@ -10,33 +14,31 @@ import {
 
 const state = {
   token: getToken(), // 登陆用户的token, 初始值从cookie中读取
+  userId: '', //用户id
   name: '', // 用户名
   avatar: '', // 用户头像图片地址
-  hasGetInfo:false,
-  buttons: [], // 当前用户的按钮权限的数组
+  hasGetInfo: false,
   roles: [] // 当前用户所拥有角色的数组
 }
 
 const mutations = {
-  RESET_STATE: (state) => {
-    Object.assign(state, getDefaultState())
-  },
-  SET_TOKEN: (state, token) => {
+  set_token: (state, token) => {
     state.token = token
+    setToken(token)
   },
-  SET_NAME: (state, name) => {
+  set_name: (state, name) => {
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
+  set_userId: (state, userId) => {
+    state.userId = userId
+  },
+  set_avatar: (state, avatar) => {
     state.avatar = avatar
   },
-  SET_HASGETINFO: (state, hasGetInfo) => {
+  set_hasGetInfo: (state, hasGetInfo) => {
     state.hasGetInfo = hasGetInfo
   },
-  SET_BUTTONS: (state, buttons) => {
-    state.buttons = buttons
-  },
-  SET_ROLES: (state, roles) => {
+  set_roles: (state, roles) => {
     state.roles = roles
   }
 }
@@ -49,7 +51,7 @@ const actions = {
   /* 
   异步登陆
   */
-  login({
+  handleLogin({
     commit
   }, userInfo) {
     const {
@@ -58,13 +60,18 @@ const actions = {
       verify
     } = userInfo
     return new Promise((resolve, reject) => {
-      login(userName.trim(), password,verify).then(result => {
+      login(userInfo).then(res => {
         const {
           data
-        } = result
-        setToken(data.token)
-        commit('SET_TOKEN', data.token)
-        resolve()
+        } = res
+        if (res.data.success) {
+          commit('set_token', data.token)
+          resolve(data)
+        } else {
+          resolve(data)
+          return false
+        }
+
       }).catch(error => {
         reject(error)
       })
@@ -74,41 +81,45 @@ const actions = {
   /* 
   异步获取用户信息
   */
-  getInfo({
+  getUserInfo({
     commit
   }) {
     return new Promise((resolve, reject) => {
-      getInfo().then(result => {
-        const {
-          data
-        } = result
+      try {
+        getUserInfo().then(res => {
+          const {
+            data
+          } = res.data
 
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
+          if (data.userId == null) {
+            commit('set_token', '')
+          } else {
+            const {
+              name,
+              userId,
+              avatar,
+              roles,
+            } = data
+            commit('set_hasGetInfo', true)
 
-        const {
-          name,
-          avatar,
-          roles,
-          permissionValueList
-        } = data
+            commit('set_name', name)
+            commit('set_userId', userId)
 
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+            commit('set_avatar', avatar)
 
-        if (roles && roles.length > 0) { // 验证返回的roles是否是一个非空数组
-          commit('SET_ROLES', roles)
-        } else {
-          reject('getInfo: roles must be a non-null array !')
-        }
-
-        commit('SET_BUTTONS', permissionValueList)
-
-        resolve(data)
-      }).catch(error => {
+            if (roles && roles.length > 0) { // 验证返回的roles是否是一个非空数组
+              commit('set_roles', roles)
+            } else {
+              reject('getInfo: roles must be a non-null array !')
+            }
+            resolve(data)
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      } catch (error) {
         reject(error)
-      })
+      }
     })
   },
 
@@ -145,7 +156,7 @@ const actions = {
 }
 
 export default {
-  namespaced: true,
+  // namespaced: true,
   state,
   mutations,
   getters,
