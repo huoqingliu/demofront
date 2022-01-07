@@ -7,10 +7,10 @@
           <h2 v-else style="color:#fff;">管</h2>
         </div>
         <Menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses" @on-select="turnToPage" >
-            <!-- <MenuItem v-for="menuList" name="1-1">
-              <Icon type="ios-home"></Icon>
-              <span>首页</span>
-            </MenuItem> -->
+            <MenuItem v-for="(item,index) in menuList" :name="index">
+              <Icon :type="item.icon"></Icon>
+              <span>{{item.name}}</span>
+            </MenuItem>
         </Menu>
       </Sider>
       <Layout>
@@ -74,7 +74,7 @@
         ]
       },
       menuList(){
-       return this.$store.getters.menuList
+       return this.$store.state.app.menuList
       }
     },
     methods: {
