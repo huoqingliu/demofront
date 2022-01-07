@@ -22,6 +22,14 @@ const state = {
 }
 
 const mutations = {
+  reset_state: (state) => {
+    state.token = getToken() // 登陆用户的token, 初始值从cookie中读取
+    state.userId = '' //用户id
+    state.name = '' // 用户名
+    state.avatar = '' // 用户头像图片地址
+    state.hasGetInfo = false
+    state.roles = [] // 当前用户所拥有角色的数组
+  },
   set_token: (state, token) => {
     state.token = token
     setToken(token)
@@ -41,6 +49,7 @@ const mutations = {
   set_roles: (state, roles) => {
     state.roles = roles
   }
+
 }
 
 const getters = {
@@ -130,11 +139,11 @@ const actions = {
     commit
   }) {
     return new Promise((resolve, reject) => {
-      logout().then(() => {
+      logout().then((res) => {
         removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
+        // resetRouter()
+        commit('reset_state')
+        resolve(res)
       }).catch(error => {
         reject(error)
       })
@@ -149,7 +158,7 @@ const actions = {
   }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
-      commit('RESET_STATE')
+      commit('reset_state')
       resolve()
     })
   }

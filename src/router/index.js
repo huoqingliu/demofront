@@ -15,11 +15,20 @@ const router = new Router({
   scrollBehavior: () => ({
       y: 0
   }), // 切换路由自动滑动到顶部
-  routes: routers// 默认只有常量路由, 其它权限路由后面动态添加
+  routes: routers
 })
 const LOAGIN_PAGE_NAME = 'login'
 
 // const LOAGIN_PAGE_NAME = 'demo'
+const toNext = (name,from,next)=>{
+  if (from.name === name) {
+    window.location.reload()
+  } else {
+    next({
+      name:name
+    })
+  }
+}
 
 
 router.beforeEach(( to,from,next)=>{
@@ -30,10 +39,15 @@ router.beforeEach(( to,from,next)=>{
     Cookies.remove(TOKEN_TIME)
   }
   if (!token && to.name !== LOAGIN_PAGE_NAME) {
-    //未登录且要跳转的不是登录页面
-    next({
-      name:LOAGIN_PAGE_NAME//跳转到登录页
-    })
+      //未登录且要跳转的不是登录页面
+    toNext(LOAGIN_PAGE_NAME,from,next)
+    /* if (from.name === LOAGIN_PAGE_NAME) {
+      window.location.reload()
+    } else {
+      next({
+        name:LOAGIN_PAGE_NAME//跳转到登录页
+      })
+    } */
   } else if(!token && to.name == LOAGIN_PAGE_NAME){
     //未登录且要跳转的是登录页面
     next()//跳转
@@ -42,31 +56,36 @@ router.beforeEach(( to,from,next)=>{
     next({
       name:homeName//跳转到首页
     })
+    toNext(homeName,from,next)
   } else {
     //校验用户信息，如果获取不到用户信息，就跳转到登录页面
     if (store.state.user.hasGetInfo) {
       store.dispatch('getUserInfo').then(user => {
         if (user.userId ==null) {
           setToken('')
-          next({name:'LOAGIN_PAGE_NAME'})
+          toNext(LOAGIN_PAGE_NAME,from,next)
+          // next({name:'LOAGIN_PAGE_NAME'})
         } else {
           next()
         }
       }).catch (() => {
         setToken('')
-        next({name:'LOAGIN_PAGE_NAME'})
+        toNext(LOAGIN_PAGE_NAME,from,next)
+        // next({name:'LOAGIN_PAGE_NAME'})
       })
     } else {
       store.dispatch('getUserInfo').then(user => {
         if (user.userId ==null) {
           setToken('')
-          next({name:'LOAGIN_PAGE_NAME'})
+          toNext(LOAGIN_PAGE_NAME,from,next)
+          // next({name:'LOAGIN_PAGE_NAME'})
         } else {
           next({name:homeName})
         }
       }).catch (() => {
         setToken('')
-        next({name:'LOAGIN_PAGE_NAME'})
+        toNext(LOAGIN_PAGE_NAME,from,next)
+        // next({name:'LOAGIN_PAGE_NAME'})
       })
     }
   }

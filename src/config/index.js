@@ -2,7 +2,7 @@ export default {
   /**
    * @description 配置显示在浏览器标签页的title
    */
-  title: '',
+  title: '后台管理系统',
   /**
    * @description token在cookie里储存的时间，默认为30分钟
    */

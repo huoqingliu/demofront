@@ -27,11 +27,11 @@ export function setToken(token) {
 console.log(TOKEN_KEY,TOKEN_TIME);
   console.log('setToken',token,expiresTime);
   Cookies.set(TOKEN_KEY,token)
-  // if (token) {
+  if (token) {
     Cookies.set(TOKEN_TIME,expiresTime)
-  // } else {
-  //   Cookies.remove(TOKEN_TIME)
-  // }
+  } else {
+    Cookies.remove(TOKEN_TIME)
+  }
 }
 
 //删除token和tokenTime
@@ -43,6 +43,6 @@ export function removeToken() {
 
 //根据当前路由 设置浏览器标签的title
 export function  setTitle(routeItem,vm){
-  const resTitle = title
-  window.document.title = resTitle
+  const resTitle = title+'-'+routeItem.meta.title
+  document.title = resTitle
 }

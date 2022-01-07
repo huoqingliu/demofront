@@ -45,7 +45,7 @@ app.post("/login", function (req, res) {
   });
 });
 
-// 请求地址： http://localhost:9080/demo
+// 请求地址： http://localhost:9080/getUserInfo
 app.post("/getUserInfo", function (req, res) {
   res.cookie('token', 'abcdef')
   res.json({
@@ -59,6 +59,18 @@ app.post("/getUserInfo", function (req, res) {
     success:true,
     message: '测试成功',
     token:'abcdef'
+  });
+});
+
+// 请求地址： http://localhost:9080/logout
+app.post("/logout", function (req, res) {
+  res.cookie('token', 'abcdef')
+  res.json({
+    code: 200, // 成功
+    data: null,
+    success:true,
+    message: '退出登录',
+    token:''
   });
 });
 

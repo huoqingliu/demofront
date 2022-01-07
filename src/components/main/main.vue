@@ -2,6 +2,9 @@
   <div class="layout">
     <Layout>
       <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
+        <div style="width:100%;text-align:center;margin:10px 0">
+          <h2 style="color:#fff;">后台管理系统</h2>
+        </div>
         <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
           <MenuItem name="1-1">
           <Icon type="ios-navigate"></Icon>
@@ -21,12 +24,25 @@
         <Header :style="{padding: 0}" class="layout-header-bar">
           <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24">
           </Icon>
-          <Breadcrumb style='position:absolute;top: 0;left: 75px'>
-            <BreadcrumbItem v-for="item in list" :to='item.to'><Icon type="ios-home-outline"></Icon>{{item}}</BreadcrumbItem>
+          <Breadcrumb style='position:absolute;top: -3px;left: 75px'>
+            <BreadcrumbItem v-for="item in list" :to='item.to'>
+              <Icon  type="ios-home"></Icon>{{item.title}}
+            </BreadcrumbItem>
           </Breadcrumb>
+          <div class="user-avatar-dropdown">
+            <Dropdown @on-click="handleLogout" >
+              
+              <Avatar icon='ios-person' size='small'></Avatar>
+              <Icon type="ios-arrow-down"></Icon>
+              <DropdownMenu slot="list">
+                <DropdownItem name='userName'>hi,{{userName}}</DropdownItem>
+                <DropdownItem name='logout'>退出登录</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
         </Header>
         <Content>
-          
+
           <keep-alive>
             <router-view />
           </keep-alive>
@@ -37,11 +53,18 @@
 </template>
 
 <script>
+  import {
+    mapActions
+  } from 'vuex'
   export default {
     data() {
       return {
         isCollapsed: false,
-        list:[]
+        list: [{
+          to:'/home',
+          title:'首页'
+        }],
+        userName: ''
       }
     },
     computed: {
@@ -59,12 +82,25 @@
       }
     },
     methods: {
+      ...mapActions(['logout']),
       collapsedSider() {
         this.$refs.side1.toggleCollapse();
+      },
+      handleLogout(name) {
+        console.log('handleLogout',name);
+        if (name !== 'logout') {
+          return
+        }
+        this.logout().then((res) => {
+          console.log('退出登录');
+          this.$router.push({
+            name: 'login'
+          })
+        })
       }
     },
     mounted() {
-      console.log(this.$route,this.$router);
+      this.userName = this.$store.state.user.name
     },
   }
 </script>
@@ -134,5 +170,15 @@
     transition: font-size .2s ease .2s, transform .2s ease .2s;
     vertical-align: middle;
     font-size: 22px;
+  }
+
+  .user-avatar-dropdown{
+    float: right;
+    margin-right: 40px;
+
+  }
+  /deep/.ivu-dropdown-menu{
+    line-height: normal;
+    text-align: center;
   }
 </style>

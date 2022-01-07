@@ -6,7 +6,7 @@ export default [
     component: () => import('@/components/login/login.vue'),
     // 路由元信息，存放页面中会用到的状态或信息
     meta: {
-      title: 'login-登录',
+      title: '登录',
       hideInMenu:true,
     }
   },
