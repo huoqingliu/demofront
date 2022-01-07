@@ -44,7 +44,7 @@
   }
 </script>
 
-<style>
+<style lang="less" scoped>
   #home {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -57,6 +57,10 @@
   .hello {
     height: 100%;
     width: 100%;
+  }
+
+  /deep/.ivu-card-shadow,.ivu-card-shadow:hover {
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.1);
   }
 
   .Card {

@@ -2,22 +2,15 @@
   <div class="layout">
     <Layout>
       <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
-        <div style="width:100%;text-align:center;margin:10px 0">
-          <h2 style="color:#fff;">后台管理系统</h2>
+        <div style="width:100%;text-align:center;margin:10px 0 20px 0">
+          <h2 v-if="!isCollapsed" style="color:#fff;">后台管理系统</h2>
+          <h2 v-else style="color:#fff;">管</h2>
         </div>
-        <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
-          <MenuItem name="1-1">
-          <Icon type="ios-navigate"></Icon>
-          <span>Option 1</span>
-          </MenuItem>
-          <MenuItem name="1-2">
-          <Icon type="ios-search"></Icon>
-          <span>Option 2</span>
-          </MenuItem>
-          <MenuItem name="1-3">
-          <Icon type="ios-settings"></Icon>
-          <span>Option 3</span>
-          </MenuItem>
+        <Menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses" @on-select="turnToPage" >
+            <!-- <MenuItem v-for="menuList" name="1-1">
+              <Icon type="ios-home"></Icon>
+              <span>首页</span>
+            </MenuItem> -->
         </Menu>
       </Sider>
       <Layout>
@@ -79,6 +72,9 @@
           'menu-item',
           this.isCollapsed ? 'collapsed-menu' : ''
         ]
+      },
+      menuList(){
+       return this.$store.getters.menuList
       }
     },
     methods: {
@@ -97,6 +93,17 @@
             name: 'login'
           })
         })
+      },
+      turnToPage(item){
+        let {name,query,params} = {}
+        if (typeof item ==='string') {
+          name = item
+        }else{
+          name = item.name
+          query = item.query
+          params = item.params
+        }
+        this.$router.push({name,query,params})
       }
     },
     mounted() {

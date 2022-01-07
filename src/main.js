@@ -6,6 +6,8 @@ import router from './router';
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import config from '@/config';
+// 动态路由菜单
+import { initRouter } from '@/libs/router-util';
 
 //iview自定义主题
 import './my-theme/index.less';
@@ -24,5 +26,9 @@ new Vue({
     el: '#app',
     router,
     store,
+    initRouter,
+    mounted() {
+        initRouter(this)
+    },
     render: h => h(App)
 });

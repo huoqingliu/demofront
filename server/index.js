@@ -31,23 +31,27 @@ app.use((req, res, next) => {
 
 // 设置body解析中间件
 app.use(express.urlencoded())
+app.use(express.json())
 
 // 请求地址： http://localhost:9080/login
 app.post("/login", function (req, res) {
   console.log(req.body);
-  res.cookie('token', 'abcdef')
+  const { userName, password, imgCode } = req.body
+  const reqCookie = 'reqCookie'
+  res.cookie('token', reqCookie)
   res.json({
     code: 200, // 成功
     data: null,
     success:true,
     message: '登录成功',
-    token:'abcdef'
+    token:reqCookie
   });
 });
 
 // 请求地址： http://localhost:9080/getUserInfo
 app.post("/getUserInfo", function (req, res) {
-  res.cookie('token', 'abcdef')
+  const reqCookie = 'reqCookie'
+  res.cookie('token', reqCookie)
   res.json({
     code: 200, // 成功
     data: {
@@ -58,13 +62,94 @@ app.post("/getUserInfo", function (req, res) {
     },
     success:true,
     message: '测试成功',
-    token:'abcdef'
+    token:reqCookie
   });
 });
 
+// 获取路由地址数组
+app.get("/getRouters", function (req, res) {
+  const reqCookie = 'reqCookie'
+  res.cookie('token', reqCookie)
+  res.json([
+    {
+      path:'/demo',
+      name: '测试',
+      component: 'Main',
+      hasChildren:true,
+      // 路由元信息，存放页面中会用到的状态或信息
+      meta: {
+        title: '测试',
+        icon:'md-adds',
+        noCache:true,
+        hideInMenu:false,
+      },
+      children: [
+        {
+          path:'demo/demo1.vue',
+          name: '测试1',
+          hasChildren:false,
+          // 路由元信息，存放页面中会用到的状态或信息
+          meta: {
+            title: '测试1',
+            icon:'md-adds',
+            noCache:true,
+            hideInMenu:false,
+          },
+          component: () => import('demo/demo1.vue'),
+          children: [],
+        },
+        {
+          path:'demo/demo2.vue',
+          name: '测试2',
+          hasChildren:false,
+          // 路由元信息，存放页面中会用到的状态或信息
+          meta: {
+            title: '测试2',
+            icon:'md-adds',
+            noCache:true,
+            hideInMenu:false,
+          },
+          children: [],
+          component:()=>import('demo/demo2.vue')
+        },
+      ]
+    },
+    {
+      path:'/text',
+      name: '文本',
+      component: 'Main',
+      hasChildren:true,
+      // 路由元信息，存放页面中会用到的状态或信息
+      meta: {
+        title: '文本',
+        icon:'md-adds',
+        noCache:true,
+        hideInMenu:false,
+      },
+      children: [
+        {
+          path:'text/text.vue',
+          name: '文本',
+          hasChildren:false,
+          // 路由元信息，存放页面中会用到的状态或信息
+          meta: {
+            title: '文本',
+            icon:'md-adds',
+            noCache:true,
+            hideInMenu:false,
+          },
+          component: () => import('text/text.vue'),
+          children: [],
+        }
+      ]
+    },
+  ]);
+});
+
+
+
 // 请求地址： http://localhost:9080/logout
 app.post("/logout", function (req, res) {
-  res.cookie('token', 'abcdef')
   res.json({
     code: 200, // 成功
     data: null,

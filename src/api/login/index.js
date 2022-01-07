@@ -23,11 +23,19 @@ export const logout = (token) => {
   })
 }
 
-//退出登录
+//获取用户信息
 export const getUserInfo = () => {
   return axios.request({
     url: `${base}/getUserInfo?timeStamp=` + Date.parse(new Date()) / 1000,
     method: 'post',
+  })
+}
+
+//获取用户信息
+export const getRouters = () => {
+  return axios.request({
+    url: `${base}/getRouters?timeStamp=` + Date.parse(new Date()) / 1000,
+    method: 'get',
   })
 }
 

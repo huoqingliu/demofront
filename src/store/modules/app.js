@@ -1,20 +1,17 @@
-import {login,logout} from '@/api/login'
-import {
-  getToken,
-  setToken,
-  removeToken
-} from '@/libs/utils'
-import {
-  resetRouter
-} from '@/router'
-
+import Router from '@/router'
+import Routers from '@/router/routers'
+import {loadMenu} from '@/libs/router-util'
 const state = {
   errorList: [],
   menuList: [],
-  routes:[]
+  routes:[...loadMenu()]
 }
 
 const mutations = {
+  updateRouters(state, list) {
+    Router.addRoutes(list)
+    state.menuList = list
+  },
   addError(state,error) {
     state.errorList.push(error)
   }
