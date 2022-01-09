@@ -1,4 +1,5 @@
 import Main from '@/components/main'
+import to404 from '@/components/404'
 export default [
   {
     path:'/login',
@@ -35,7 +36,7 @@ export default [
         },
         component:()=>import('@/view/home/home.vue')
       },
-      {
+      /* {
         path:'/demo',
         name: 'demo',
         // 路由元信息，存放页面中会用到的状态或信息
@@ -46,12 +47,13 @@ export default [
           icon:'md-home'
         },
         component:()=>import('@/view/demo/demo.vue')
-      },
+      }, */
     ]
   },
-  { 
-    path: '*', 
-    redirect: '/404', 
-    hidden: true 
-  }
+  // { 
+  //   path: '*', 
+  //   redirect: '/404', 
+  //   hidden: true,
+  //   component:to404,
+  // }
 ]

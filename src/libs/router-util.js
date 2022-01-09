@@ -39,14 +39,14 @@ export const formatRouters = (list) => {
     }
     obj.meta = item.meta
     obj.icon = (item.meta&&item.meta.icon)||''
-    if (item.hasChildren) {
+    if (item.children[0]) {
+      obj.component = Main
+      
+      obj.children = formatRouters(item.children)
+    } else {
       let component = item.component
       obj.component = () => import('@/view/' + component)
-      if (item.children[0]) {
-        obj.children = formatRouters(item.children)
-      }
-    } else {
-      obj.component = Main
+      obj.children = []
     }
     res.push(obj)
   })

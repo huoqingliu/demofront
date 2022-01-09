@@ -6,11 +6,28 @@
           <h2 v-if="!isCollapsed" style="color:#fff;">后台管理系统</h2>
           <h2 v-else style="color:#fff;">管</h2>
         </div>
-        <Menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses" @on-select="turnToPage" >
-            <MenuItem v-for="(item,index) in menuList" :name="index">
-              <Icon :type="item.icon"></Icon>
-              <span>{{item.name}}</span>
+        <Menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses" @on-select="turnToPage">
+
+          <template  >
+            <div v-for="(item,index) in menuList">
+            
+            <Submenu v-if="item.children.length>1" :name="'Sub'+item.name">
+              <template slot="title">
+                <Icon :type="item.icon" />
+                <span>{{item.name}}</span>
+              </template>
+              <MenuItem v-for="(childrenItem,index) in item.children" :name="'children'+childrenItem.name" :to='{name:childrenItem.name}'>
+                <Icon :type="childrenItem.icon"></Icon>
+                <span>{{childrenItem.name}}</span>
+              </MenuItem>
+            </Submenu>
+            <MenuItem  v-else :name="'children'+item.children[0].name" :to='{name:item.children[0].name}'>
+              <Icon :type="item.children[0].icon"></Icon>
+              <span>{{item.children[0].name}}</span>
             </MenuItem>
+            </div>
+          </template>
+
         </Menu>
       </Sider>
       <Layout>
@@ -19,12 +36,12 @@
           </Icon>
           <Breadcrumb style='position:absolute;top: -3px;left: 75px'>
             <BreadcrumbItem v-for="item in list" :to='item.to'>
-              <Icon  type="ios-home"></Icon>{{item.title}}
+              <Icon type="ios-home"></Icon>{{item.title}}
             </BreadcrumbItem>
           </Breadcrumb>
           <div class="user-avatar-dropdown">
-            <Dropdown @on-click="handleLogout" >
-              
+            <Dropdown @on-click="handleLogout">
+
               <Avatar icon='ios-person' size='small'></Avatar>
               <Icon type="ios-arrow-down"></Icon>
               <DropdownMenu slot="list">
@@ -54,8 +71,8 @@
       return {
         isCollapsed: false,
         list: [{
-          to:'/home',
-          title:'首页'
+          to: '/home',
+          title: '首页'
         }],
         userName: ''
       }
@@ -73,8 +90,8 @@
           this.isCollapsed ? 'collapsed-menu' : ''
         ]
       },
-      menuList(){
-       return this.$store.state.app.menuList
+      menuList() {
+        return this.$store.state.app.menuList
       }
     },
     methods: {
@@ -83,7 +100,7 @@
         this.$refs.side1.toggleCollapse();
       },
       handleLogout(name) {
-        console.log('handleLogout',name);
+        console.log('handleLogout', name);
         if (name !== 'logout') {
           return
         }
@@ -94,16 +111,24 @@
           })
         })
       },
-      turnToPage(item){
-        let {name,query,params} = {}
-        if (typeof item ==='string') {
+      turnToPage(item) {
+        let {
+          name,
+          query,
+          params
+        } = {}
+        if (typeof item === 'string') {
           name = item
-        }else{
+        } else {
           name = item.name
           query = item.query
           params = item.params
         }
-        this.$router.push({name,query,params})
+        this.$router.push({
+          name,
+          query,
+          params
+        })
       }
     },
     mounted() {
@@ -179,13 +204,18 @@
     font-size: 22px;
   }
 
-  .user-avatar-dropdown{
+  .user-avatar-dropdown {
     float: right;
     margin-right: 40px;
 
   }
-  /deep/.ivu-dropdown-menu{
+
+  /deep/.ivu-dropdown-menu {
     line-height: normal;
     text-align: center;
+  }
+  /deep/.ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened{
+    width: 100%;
+    margin: 0;
   }
 </style>

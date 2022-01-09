@@ -8,9 +8,8 @@ import {
   setToken,
   removeToken
 } from '@/libs/utils'
-import {
-  resetRouter
-} from '@/router'
+// 动态路由菜单
+import router from '@/router'
 
 const state = {
   token: getToken(), // 登陆用户的token, 初始值从cookie中读取
@@ -141,7 +140,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout().then((res) => {
         removeToken() // must remove  token  first
-        // resetRouter()
+        localStorage.removeItem('route')
         commit('reset_state')
         resolve(res)
       }).catch(error => {

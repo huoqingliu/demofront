@@ -85,7 +85,7 @@ app.get("/getRouters", function (req, res) {
       },
       children: [
         {
-          path:'demo/demo1.vue',
+          path:'demo/demo.vue',
           name: '测试1',
           hasChildren:false,
           // 路由元信息，存放页面中会用到的状态或信息
@@ -95,7 +95,7 @@ app.get("/getRouters", function (req, res) {
             noCache:true,
             hideInMenu:false,
           },
-          component: () => import('demo/demo1.vue'),
+          component: 'demo/demo.vue',
           children: [],
         },
         {
@@ -110,7 +110,7 @@ app.get("/getRouters", function (req, res) {
             hideInMenu:false,
           },
           children: [],
-          component:()=>import('demo/demo2.vue')
+          component:'demo/demo2.vue'
         },
       ]
     },
@@ -138,7 +138,7 @@ app.get("/getRouters", function (req, res) {
             noCache:true,
             hideInMenu:false,
           },
-          component: () => import('text/text.vue'),
+          component: 'text/text.vue',
           children: [],
         }
       ]

@@ -40,7 +40,11 @@
 <script>
   export default {
     name: 'home',
-    components: {}
+    components: {},
+    mounted() {
+    console.log(this.$router.getRoutes());
+      
+    },
   }
 </script>
 

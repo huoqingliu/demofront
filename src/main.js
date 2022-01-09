@@ -21,6 +21,14 @@ Vue.config.productionTip = false
 Vue.prototype.$config = config
 // The routing configuration
 
+//解决3.0以上vuex路由跳转同名时报错的问题
+const originalPush = VueRouter.prototype.push;
+
+VueRouter.prototype.push = function push(location) {
+
+  return originalPush.call(this, location).catch((err) => err);
+
+};
 
 new Vue({
     el: '#app',

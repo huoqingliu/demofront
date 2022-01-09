@@ -32,7 +32,7 @@
           </Row>
         </FormItem>
         <FormItem>
-          <Button class="sub-button" type="primary" @click="handleSubmit" long>登录</Button>
+          <Button class="sub-button" type="primary" @click="handleSubmit" long :loading='loading'>登录</Button>
         </FormItem>
       </Form>
       <h2 class="login-tip">supported by@huoqingliu</h2>
@@ -42,6 +42,8 @@
 
 <script type="text/ecmascript-6">
 import {mapActions} from 'vuex'
+// 动态路由菜单
+import { initRouter } from '@/libs/router-util';
   export default {
     name: 'login',
     data() {
@@ -53,20 +55,27 @@ import {mapActions} from 'vuex'
         },
         rules: {
 
-        }
+        },
+        loading:false
       }
     },
     methods: {
       ...mapActions(['handleLogin','getUserInfo']),
       //点击登录
       handleSubmit() {
+        if (this.loading) {
+          return
+        }
+        this.loading = true
         let params = {
           userName: this.loginFrom.userName,
           password: this.loginFrom.password,
           imgCode: this.loginFrom.imgCode,
         }
         this.handleLogin(params).then((res) => {
+          initRouter(this)
           this.getUserInfo().then((res) => {
+            this.loading = false
             this.$router.push({name:this.$config.homeName})
           })
         })

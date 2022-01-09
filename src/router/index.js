@@ -6,7 +6,6 @@ import iView from 'iview'
 import { setToken, getToken, setTitle } from '@/libs/utils'
 import Cookies from 'js-cookie'
 import config from '@/config'
-
 const {TOKEN_TIME,homeName } = config
 
 Vue.use(Router)
@@ -58,6 +57,7 @@ router.beforeEach(( to,from,next)=>{
     })
     toNext(homeName,from,next)
   } else {
+    console.log('已登录');
     //校验用户信息，如果获取不到用户信息，就跳转到登录页面
     if (store.state.user.hasGetInfo) {
       store.dispatch('getUserInfo').then(user => {
@@ -80,7 +80,8 @@ router.beforeEach(( to,from,next)=>{
           toNext(LOAGIN_PAGE_NAME,from,next)
           // next({name:'LOAGIN_PAGE_NAME'})
         } else {
-          next({name:homeName})
+          toNext(homeName,from,next)
+          // next({name:homeName})
         }
       }).catch (() => {
         setToken('')

@@ -8,8 +8,16 @@ const state = {
 }
 
 const mutations = {
+  reset_state: (state) => {
+    state.errorList=[]
+    state.menuList= []
+    state.routes=[...loadMenu()]
+  },
   updateRouters(state, list) {
-    Router.addRoutes(list)
+    list.forEach(item => {
+      Router.addRoute(item)
+    });
+    
     state.menuList = list
   },
   addError(state,error) {
