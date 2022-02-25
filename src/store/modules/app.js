@@ -1,5 +1,7 @@
 import Router from '@/router'
 import Routers from '@/router/routers'
+import to404 from '@/components/404'
+
 import {loadMenu} from '@/libs/router-util'
 const state = {
   errorList: [],
@@ -19,6 +21,12 @@ const mutations = {
     });
     
     state.menuList = list
+    Router.addRoute({ 
+      path: '*', 
+      name: '/404', 
+      hidden: true,
+      component:to404,
+    })
   },
   addError(state,error) {
     state.errorList.push(error)

@@ -6,23 +6,37 @@
           <h2 v-if="!isCollapsed" style="color:#fff;">后台管理系统</h2>
           <h2 v-else style="color:#fff;">管</h2>
         </div>
-        <Menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses" @on-select="turnToPage">
+        <Menu theme="dark" width="auto" id="menuUl" :class="menuitemClasses" :active-name='activeName' :open-names='openNames' @on-select="turnToPage">
 
           <template  >
             <div v-for="(item,index) in menuList">
             
-            <Submenu v-if="item.children.length>1" :name="'Sub'+item.name">
+            <Submenu v-if="item.children.length>1" :name="item.path">
               <template slot="title">
-                <Icon :type="item.icon" />
+                <Icon :type="item.icon"/>
                 <span>{{item.name}}</span>
               </template>
-              <MenuItem v-for="(childrenItem,index) in item.children" :name="'children'+childrenItem.name" :to='{name:childrenItem.name}'>
-                <Icon :type="childrenItem.icon"></Icon>
-                <span>{{childrenItem.name}}</span>
-              </MenuItem>
+              <div v-for="(childrenItem,index) in item.children">
+                <Submenu v-if="childrenItem.children.length>1" :name="childrenItem.path">
+                  <template slot="title">
+                    <Icon :type="childrenItem.icon"/>
+                    <span>{{childrenItem.name}}</span>
+                  </template>
+                  <MenuItem v-for="(childrenItem1,index) in childrenItem.children" :name="childrenItem.path+'/'+childrenItem1.path" :to='{name:childrenItem1.name}'>
+                    <Icon :type="childrenItem1.icon"/>
+                    <span>{{childrenItem1.name}}</span>
+                  </MenuItem>
+                  
+                </Submenu>
+                <MenuItem v-else  :name="item.path+'/'+childrenItem.path" :to='{name:childrenItem.name}'>
+                  <Icon :type="childrenItem.icon"/>
+                  <span>{{childrenItem.name}}</span>
+                </MenuItem>
+              </div>
+              
             </Submenu>
-            <MenuItem  v-else :name="'children'+item.children[0].name" :to='{name:item.children[0].name}'>
-              <Icon :type="item.children[0].icon"></Icon>
+            <MenuItem  v-else :name="item.path+'/'+item.children[0].path" :to='{name:item.children[0].name}'>
+              <Icon :type="item.children[0].icon"/>
               <span>{{item.children[0].name}}</span>
             </MenuItem>
             </div>
@@ -36,7 +50,7 @@
           </Icon>
           <Breadcrumb style='position:absolute;top: -3px;left: 75px'>
             <BreadcrumbItem v-for="item in list" :to='item.to'>
-              <Icon type="ios-home"></Icon>{{item.title}}
+              <Icon :type="item.icon"></Icon>{{item.title}}
             </BreadcrumbItem>
           </Breadcrumb>
           <div class="user-avatar-dropdown">
@@ -67,13 +81,17 @@
     mapActions
   } from 'vuex'
   export default {
+    name:'Main',
     data() {
       return {
         isCollapsed: false,
         list: [{
           to: '/home',
+          icon:'ios-home',
           title: '首页'
         }],
+        activeName:'',
+        openNames:'',
         userName: ''
       }
     },
@@ -129,10 +147,39 @@
           query,
           params
         })
+      },
+      getTitle(lists){
+        lists.forEach((item)=>{
+          this.list.push({
+            to :'',
+            icon:item.icon,
+            title:item.name,
+          })
+          if (item.children&&item.children[0]) {
+            this.getTitle(item.children)
+          }
+        })
       }
     },
     mounted() {
       this.userName = this.$store.state.user.name
+      this.activeName = this.$route.path
+      this.openNames = ['/'+this.activeName.split('/')[1]]
+      
+    },
+    created() {
+      this.activeName = this.$route.path
+      this.openNames = ['/'+this.activeName.split('/',2)[1]]
+      this.menuList.forEach((item,index)=>{
+        if (item.name ==this.openNames[0] ) {
+          this.list.push({
+            to :'',
+            icon:item.icon,
+            title:item.name,
+          })
+        }
+        this.getTitle(this.menuList)
+      })
     },
   }
 </script>
@@ -165,6 +212,18 @@
     background: #5b6270;
     border-radius: 3px;
     margin: 15px auto;
+  }
+
+  #menuUl{
+    li{
+      width: 100%;
+      margin: 0;
+    }
+    .ivu-menu-item-selected{
+      border-right: none;
+      color: #fff;
+      background: #e25454 !important;
+    }
   }
 
   .menu-icon {

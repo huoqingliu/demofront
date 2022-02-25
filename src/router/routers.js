@@ -1,5 +1,4 @@
 import Main from '@/components/main'
-import to404 from '@/components/404'
 export default [
   {
     path:'/login',
@@ -50,10 +49,34 @@ export default [
       }, */
     ]
   },
-  // { 
-  //   path: '*', 
-  //   redirect: '/404', 
-  //   hidden: true,
-  //   component:to404,
-  // }
+  {
+    path:'/sys',
+    name: '系统管理',
+    component: Main,
+    hasChildren:true,
+    // 路由元信息，存放页面中会用到的状态或信息
+    meta: {
+      title: '系统管理',
+      icon:'md-adds',
+      noCache:true,
+      hideInMenu:false,
+    },
+    children: [
+      {
+        path:'menu',
+        name: '系统菜单',
+        hasChildren:false,
+        // 路由元信息，存放页面中会用到的状态或信息
+        meta: {
+          title: '系统菜单',
+          icon:'ios-pricetags',
+          noCache:true,
+          hideInMenu:false,
+        },
+        component:()=>import('@/view/sys/menu.vue'),
+        children: [],
+      }
+    ]
+  },
+  
 ]

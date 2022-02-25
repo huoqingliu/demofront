@@ -79,19 +79,19 @@ app.get("/getRouters", function (req, res) {
       // 路由元信息，存放页面中会用到的状态或信息
       meta: {
         title: '测试',
-        icon:'md-adds',
+        icon:'md-menu',
         noCache:true,
         hideInMenu:false,
       },
       children: [
         {
-          path:'demo/demo.vue',
+          path:'demo',
           name: '测试1',
           hasChildren:false,
           // 路由元信息，存放页面中会用到的状态或信息
           meta: {
             title: '测试1',
-            icon:'md-adds',
+            icon:'md-menu',
             noCache:true,
             hideInMenu:false,
           },
@@ -99,13 +99,13 @@ app.get("/getRouters", function (req, res) {
           children: [],
         },
         {
-          path:'demo/demo2.vue',
+          path:'demo2',
           name: '测试2',
           hasChildren:false,
           // 路由元信息，存放页面中会用到的状态或信息
           meta: {
             title: '测试2',
-            icon:'md-adds',
+            icon:'md-menu',
             noCache:true,
             hideInMenu:false,
           },
@@ -115,32 +115,46 @@ app.get("/getRouters", function (req, res) {
       ]
     },
     {
-      path:'/text',
-      name: '文本',
+      path:'/sys',
+      name: '系统管理',
       component: 'Main',
       hasChildren:true,
       // 路由元信息，存放页面中会用到的状态或信息
       meta: {
-        title: '文本',
+        title: '系统管理',
         icon:'md-adds',
         noCache:true,
         hideInMenu:false,
       },
       children: [
         {
-          path:'text/text.vue',
-          name: '文本',
+          path:'menu',
+          name: '系统菜单',
           hasChildren:false,
           // 路由元信息，存放页面中会用到的状态或信息
           meta: {
-            title: '文本',
-            icon:'md-adds',
+            title: '系统菜单',
+            icon:'ios-pricetags',
             noCache:true,
             hideInMenu:false,
           },
-          component: 'text/text.vue',
+          component: 'sys/menu.vue',
           children: [],
-        }
+        },
+        /* {
+          path:'menu1',
+          name: '系统菜单1',
+          hasChildren:false,
+          // 路由元信息，存放页面中会用到的状态或信息
+          meta: {
+            title: '系统菜单1',
+            icon:'ios-pricetags',
+            noCache:true,
+            hideInMenu:false,
+          },
+          component: 'sys/menu1.vue',
+          children: [],
+        } */
       ]
     },
   ]);

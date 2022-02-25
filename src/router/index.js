@@ -19,7 +19,8 @@ const router = new Router({
 const LOAGIN_PAGE_NAME = 'login'
 
 // const LOAGIN_PAGE_NAME = 'demo'
-const toNext = (name,from,next)=>{
+const toNext = (name, from, next) => {
+  console.log(name, from,'toNext');
   if (from.name === name) {
     window.location.reload()
   } else {
@@ -80,8 +81,8 @@ router.beforeEach(( to,from,next)=>{
           toNext(LOAGIN_PAGE_NAME,from,next)
           // next({name:'LOAGIN_PAGE_NAME'})
         } else {
-          toNext(homeName,from,next)
-          // next({name:homeName})
+          // toNext(homeName,from,next)
+          next()
         }
       }).catch (() => {
         setToken('')

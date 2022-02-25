@@ -39,7 +39,7 @@ export const formatRouters = (list) => {
     }
     obj.meta = item.meta
     obj.icon = (item.meta&&item.meta.icon)||''
-    if (item.children[0]) {
+    if (item.children&&item.children[0]) {
       obj.component = Main
       
       obj.children = formatRouters(item.children)

@@ -24,8 +24,7 @@ export function setToken(token) {
   let millisecond = (new Date().getTime())
   // 获取当前并加上token失效的时间,设置为token的过期时间
   let expiresTime = millisecond + 60 * 1000 * cookieExpires
-console.log(TOKEN_KEY,TOKEN_TIME);
-  console.log('setToken',token,expiresTime);
+  // console.log('setToken',token,expiresTime);
   Cookies.set(TOKEN_KEY,token)
   if (token) {
     Cookies.set(TOKEN_TIME,expiresTime)
