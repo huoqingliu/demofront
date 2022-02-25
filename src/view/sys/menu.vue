@@ -42,7 +42,6 @@
     name: 'home',
     components: {},
     mounted() {
-    console.log(this.$router.getRoutes());
       
     },
   }

@@ -25,7 +25,11 @@ const toNext = (name, from, next) => {
     window.location.reload()
   } else {
     next({
-      name:name
+      name: name,
+      query: {
+        t:Date.parse(new Date()) / 1000
+      }
+      
     })
   }
 }
@@ -40,14 +44,9 @@ router.beforeEach(( to,from,next)=>{
   }
   if (!token && to.name !== LOAGIN_PAGE_NAME) {
       //未登录且要跳转的不是登录页面
-    toNext(LOAGIN_PAGE_NAME,from,next)
-    /* if (from.name === LOAGIN_PAGE_NAME) {
-      window.location.reload()
-    } else {
       next({
-        name:LOAGIN_PAGE_NAME//跳转到登录页
+        name:LOAGIN_PAGE_NAME//跳转到首页
       })
-    } */
   } else if(!token && to.name == LOAGIN_PAGE_NAME){
     //未登录且要跳转的是登录页面
     next()//跳转
@@ -56,7 +55,6 @@ router.beforeEach(( to,from,next)=>{
     next({
       name:homeName//跳转到首页
     })
-    toNext(homeName,from,next)
   } else {
     console.log('已登录');
     //校验用户信息，如果获取不到用户信息，就跳转到登录页面
@@ -64,30 +62,25 @@ router.beforeEach(( to,from,next)=>{
       store.dispatch('getUserInfo').then(user => {
         if (user.userId ==null) {
           setToken('')
-          toNext(LOAGIN_PAGE_NAME,from,next)
-          // next({name:'LOAGIN_PAGE_NAME'})
+          next({name:'LOAGIN_PAGE_NAME'})
         } else {
           next()
         }
       }).catch (() => {
         setToken('')
-        toNext(LOAGIN_PAGE_NAME,from,next)
-        // next({name:'LOAGIN_PAGE_NAME'})
+        next({name:'LOAGIN_PAGE_NAME'})
       })
     } else {
       store.dispatch('getUserInfo').then(user => {
         if (user.userId ==null) {
           setToken('')
-          toNext(LOAGIN_PAGE_NAME,from,next)
-          // next({name:'LOAGIN_PAGE_NAME'})
+          next({name:'LOAGIN_PAGE_NAME'})
         } else {
-          // toNext(homeName,from,next)
           next()
         }
       }).catch (() => {
         setToken('')
-        toNext(LOAGIN_PAGE_NAME,from,next)
-        // next({name:'LOAGIN_PAGE_NAME'})
+        next({name:'LOAGIN_PAGE_NAME'})
       })
     }
   }

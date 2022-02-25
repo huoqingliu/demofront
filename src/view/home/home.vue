@@ -43,7 +43,6 @@
     components: {},
     mounted() {
     console.log(this.$router.getRoutes());
-      
     },
   }
 </script>

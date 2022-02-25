@@ -6,7 +6,7 @@
           <h2 v-if="!isCollapsed" style="color:#fff;">后台管理系统</h2>
           <h2 v-else style="color:#fff;">管</h2>
         </div>
-        <Menu theme="dark" width="auto" id="menuUl" :class="menuitemClasses" :active-name='activeName' :open-names='openNames' @on-select="turnToPage">
+        <Menu theme="dark" width="auto" id="menuUl" :class="menuitemClasses" :active-name='activeName' :open-names='openNames' >
 
           <template  >
             <div v-for="(item,index) in menuList">
@@ -22,20 +22,20 @@
                     <Icon :type="childrenItem.icon"/>
                     <span>{{childrenItem.name}}</span>
                   </template>
-                  <MenuItem v-for="(childrenItem1,index) in childrenItem.children" :name="childrenItem.path+'/'+childrenItem1.path" :to='{name:childrenItem1.name}'>
+                  <MenuItem v-for="(childrenItem1,index) in childrenItem.children" :name="childrenItem.path+'/'+childrenItem1.path" :to="{path:childrenItem.path+'/'+childrenItem1.path}">
                     <Icon :type="childrenItem1.icon"/>
                     <span>{{childrenItem1.name}}</span>
                   </MenuItem>
                   
                 </Submenu>
-                <MenuItem v-else  :name="item.path+'/'+childrenItem.path" :to='{name:childrenItem.name}'>
+                <MenuItem v-else  :name="item.path+'/'+childrenItem.path" :to="{path:item.path+'/'+childrenItem.path}">
                   <Icon :type="childrenItem.icon"/>
                   <span>{{childrenItem.name}}</span>
                 </MenuItem>
               </div>
               
             </Submenu>
-            <MenuItem  v-else :name="item.path+'/'+item.children[0].path" :to='{name:item.children[0].name}'>
+            <MenuItem  v-else :name="item.path+'/'+item.children[0].path" :to="{path:item.path+'/'+item.children[0].path}">
               <Icon :type="item.children[0].icon"/>
               <span>{{item.children[0].name}}</span>
             </MenuItem>
@@ -80,6 +80,7 @@
   import {
     mapActions
   } from 'vuex'
+  
   export default {
     name:'Main',
     data() {
@@ -129,25 +130,6 @@
           })
         })
       },
-      turnToPage(item) {
-        let {
-          name,
-          query,
-          params
-        } = {}
-        if (typeof item === 'string') {
-          name = item
-        } else {
-          name = item.name
-          query = item.query
-          params = item.params
-        }
-        this.$router.push({
-          name,
-          query,
-          params
-        })
-      },
       getTitle(lists){
         lists.forEach((item)=>{
           this.list.push({
@@ -159,7 +141,7 @@
             this.getTitle(item.children)
           }
         })
-      }
+      },
     },
     mounted() {
       this.userName = this.$store.state.user.name
