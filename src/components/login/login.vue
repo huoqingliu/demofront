@@ -41,9 +41,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-import {mapActions} from 'vuex'
-// 动态路由菜单
-import { initRouter } from '@/libs/router-util';
+  import {
+    mapActions
+  } from 'vuex'
+  // 动态路由菜单
+  import {
+    initRouter
+  } from '@/libs/router-util';
   export default {
     name: 'login',
     data() {
@@ -56,11 +60,11 @@ import { initRouter } from '@/libs/router-util';
         rules: {
 
         },
-        loading:false
+        loading: false
       }
     },
     methods: {
-      ...mapActions(['handleLogin','getUserInfo']),
+      ...mapActions(['handleLogin', 'getUserInfo']),
       //点击登录
       handleSubmit() {
         if (this.loading) {
@@ -73,16 +77,18 @@ import { initRouter } from '@/libs/router-util';
           imgCode: this.loginFrom.imgCode,
         }
         this.handleLogin(params).then((res) => {
-          initRouter(this)
-          this.getUserInfo().then((res) => {
-            this.loading = false
-            this.$router.push({name:this.$config.homeName})
+          initRouter(this).then(res=>{
+            this.getUserInfo().then((res) => {
+              this.loading = false
+              this.$router.push({
+                name: this.$config.homeName
+              })
+            })
           })
         })
       }
     },
-    mounted() {
-    },
+    mounted() {},
   }
 </script>
 
@@ -104,12 +110,13 @@ import { initRouter } from '@/libs/router-util';
       border-radius: 20px;
 
       #loginFrom {
-        .verify-button{
+        .verify-button {
           margin-left: 10px;
           margin-top: -1px;
         }
       }
-      .login-tip{
+
+      .login-tip {
         font-size: .625rem;
         text-align: center;
         color: #c3c3c3;

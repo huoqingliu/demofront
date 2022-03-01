@@ -120,7 +120,6 @@ const actions = {
             } else {
               reject('getInfo: roles must be a non-null array !')
             }
-            console.log('getUserInfo',data);
             resolve(data)
           }
         }).catch(error => {

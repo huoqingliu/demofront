@@ -2,18 +2,16 @@ import { getRouters } from '@/api/login'
 import { getToken } from '@/libs/utils'
 import Main from '@/components/main'
 
-export const initRouter = (vm) => {
-  console.log('initRouter');
+export const initRouter = async(vm) => {
   if (!getToken()) {
     return 
   }
   let list = []
-  getRouters().then((res) => {
-    var routers = res.data
-    list = formatRouters(routers)
-    localStorage.setItem('route',JSON.stringify(list))
-    vm.$store.commit('updateRouters',list)
-  })
+  var res=await getRouters()
+  var routers = res.data
+  list = formatRouters(routers)
+  localStorage.setItem('route',JSON.stringify(list))
+  await vm.$store.commit('updateRouters', list)
   return list
 
 }

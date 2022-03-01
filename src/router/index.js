@@ -38,7 +38,7 @@ const toNext = (name, from, next) => {
 router.beforeEach(( to,from,next)=>{
   iView.LoadingBar.start()
   const token = getToken()
-  console.log('路由守卫',token,to.name);
+  // console.log('路由守卫',token,to.name);
   if (!token) {
     Cookies.remove(TOKEN_TIME)
   }
@@ -56,31 +56,30 @@ router.beforeEach(( to,from,next)=>{
       name:homeName//跳转到首页
     })
   } else {
-    console.log('已登录');
     //校验用户信息，如果获取不到用户信息，就跳转到登录页面
     if (store.state.user.hasGetInfo) {
       store.dispatch('getUserInfo').then(user => {
         if (user.userId ==null) {
           setToken('')
-          next({name:'LOAGIN_PAGE_NAME'})
+          next({name:LOAGIN_PAGE_NAME})
         } else {
           next()
         }
       }).catch (() => {
         setToken('')
-        next({name:'LOAGIN_PAGE_NAME'})
+        next({name:LOAGIN_PAGE_NAME})
       })
     } else {
       store.dispatch('getUserInfo').then(user => {
         if (user.userId ==null) {
           setToken('')
-          next({name:'LOAGIN_PAGE_NAME'})
+          next({name:LOAGIN_PAGE_NAME})
         } else {
-          next()
+          next({name:homeName})
         }
       }).catch (() => {
         setToken('')
-        next({name:'LOAGIN_PAGE_NAME'})
+        next({name:LOAGIN_PAGE_NAME})
       })
     }
   }

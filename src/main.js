@@ -35,8 +35,8 @@ new Vue({
     router,
     store,
     initRouter,
-    mounted() {
-        initRouter(this)
+    async mounted() {
+        await initRouter(this)
     },
     render: h => h(App)
 });
