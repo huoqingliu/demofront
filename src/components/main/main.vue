@@ -152,15 +152,27 @@
     created() {
       this.activeName = this.$route.path
       this.openNames = ['/'+this.activeName.split('/',2)[1]]
+      let that = this
       this.menuList.forEach((item,index)=>{
-        if (item.name ==this.openNames[0] ) {
+        if (item.path ==this.openNames[0] ) {
           this.list.push({
             to :'',
             icon:item.icon,
             title:item.name,
           })
+          if (item.children&&item.children[0]) {
+            item.children.forEach((childrenItem)=>{
+              if (childrenItem.path ==that.activeName.split('/')[2]) {
+                that.list.push({
+                  to :'',
+                  icon:childrenItem.icon,
+                  title:childrenItem.name,
+                })
+              }
+            })
+          }
         }
-        this.getTitle(this.menuList)
+        // this.getTitle(this.menuList)
       })
     },
   }
