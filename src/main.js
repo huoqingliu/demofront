@@ -8,6 +8,7 @@ import 'view-design/dist/styles/iview.css';
 import config from '@/config';
 // 动态路由菜单
 import { initRouter } from '@/libs/router-util';
+import '@/libs/rem'
 
 //iview自定义主题
 import './my-theme/index.less';

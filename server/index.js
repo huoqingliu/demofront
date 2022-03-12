@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 
 const app = express();
 
@@ -18,8 +19,8 @@ app.use((req, res, next) => {
   res.set("Access-Control-Allow-Mehtods", "GET,POST,PUT,DELETE");
   // 允许跨域的请求头
   res.set("Access-Control-Allow-Headers", "Content-Type");
-  
-  
+
+
   if (req.method === "options") {
     // 预检请求 直接返回响应
     res.end();
@@ -36,15 +37,19 @@ app.use(express.json())
 // 请求地址： http://localhost:9080/login
 app.post("/login", function (req, res) {
   console.log(req.body);
-  const { userName, password, imgCode } = req.body
+  const {
+    userName,
+    password,
+    imgCode
+  } = req.body
   const reqCookie = 'reqCookie'
   res.cookie('token', reqCookie)
   res.json({
     code: 200, // 成功
     data: null,
-    success:true,
+    success: true,
     message: '登录成功',
-    token:reqCookie
+    token: reqCookie
   });
 });
 
@@ -55,88 +60,87 @@ app.post("/getUserInfo", function (req, res) {
   res.json({
     code: 200, // 成功
     data: {
-      name:'测试用户',
-      userId:'213424',
-      avatar:'-',
-      roles:['home','demo'],
+      name: '测试用户',
+      userId: '213424',
+      avatar: '-',
+      roles: ['home', 'demo'],
     },
-    success:true,
+    success: true,
     message: '测试成功',
-    token:reqCookie
+    token: reqCookie
   });
 });
 
 // 获取路由地址数组
 app.get("/getRouters", function (req, res) {
   const reqCookie = 'reqCookie'
+  var routers = fs.readFileSync('demo.js').toString()
   res.cookie('token', reqCookie)
   res.json([
     {
-      path:'/demo',
+      path: '/demo',
       name: '测试',
       component: 'Main',
-      hasChildren:true,
+      hasChildren: true,
       // 路由元信息，存放页面中会用到的状态或信息
       meta: {
         title: '测试',
-        icon:'md-menu',
-        noCache:true,
-        hideInMenu:false,
+        icon: 'md-menu',
+        noCache: true,
+        hideInMenu: false,
       },
-      children: [
-        {
-          path:'demo',
+      children: [{
+          path: 'demo',
           name: '测试1',
-          hasChildren:false,
+          hasChildren: false,
           // 路由元信息，存放页面中会用到的状态或信息
           meta: {
             title: '测试1',
-            icon:'md-menu',
-            noCache:true,
-            hideInMenu:false,
+            icon: 'md-menu',
+            noCache: true,
+            hideInMenu: false,
           },
           component: 'demo/demo.vue',
           children: [],
         },
         {
-          path:'demo2',
+          path: 'demo2',
           name: '测试2',
-          hasChildren:false,
+          hasChildren: false,
           // 路由元信息，存放页面中会用到的状态或信息
           meta: {
             title: '测试2',
-            icon:'md-menu',
-            noCache:true,
-            hideInMenu:false,
+            icon: 'md-menu',
+            noCache: true,
+            hideInMenu: false,
           },
           children: [],
-          component:'demo/demo2.vue'
+          component: 'demo/demo2.vue'
         },
       ]
     },
     {
-      path:'/sys',
+      path: '/sys',
       name: '系统管理',
       component: 'Main',
-      hasChildren:true,
+      hasChildren: true,
       // 路由元信息，存放页面中会用到的状态或信息
       meta: {
         title: '系统管理',
-        icon:'md-adds',
-        noCache:true,
-        hideInMenu:false,
+        icon: 'md-adds',
+        noCache: true,
+        hideInMenu: false,
       },
-      children: [
-        {
-          path:'menu',
+      children: [{
+          path: 'menu',
           name: '系统菜单',
-          hasChildren:false,
+          hasChildren: false,
           // 路由元信息，存放页面中会用到的状态或信息
           meta: {
             title: '系统菜单',
-            icon:'ios-pricetags',
-            noCache:true,
-            hideInMenu:false,
+            icon: 'ios-pricetags',
+            noCache: true,
+            hideInMenu: false,
           },
           component: 'sys/menu.vue',
           children: [],
@@ -167,9 +171,9 @@ app.post("/logout", function (req, res) {
   res.json({
     code: 200, // 成功
     data: null,
-    success:true,
+    success: true,
     message: '退出登录',
-    token:''
+    token: ''
   });
 });
 
