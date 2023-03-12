@@ -18,7 +18,7 @@ const router = new Router({
 })
 const LOAGIN_PAGE_NAME = 'login'
 
-// const LOAGIN_PAGE_NAME = 'demo'
+// const LOAGIN_PAGE_NAME = '系统菜单'
 const toNext = (name, from, next) => {
   console.log(name, from,'toNext');
   if (from.name === name) {

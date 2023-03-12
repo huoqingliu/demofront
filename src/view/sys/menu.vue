@@ -229,6 +229,7 @@
             update: new Date()
           })
         }
+        console.log(data);
         return data;
       },
       formatDate(date) {
